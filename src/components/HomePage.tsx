@@ -54,7 +54,7 @@ const HomePage = () => {
 
   return (
     <div>
-      <nav className="bg-gray-800 text-white p-4">
+      <nav className="bg-gray-400 text-black p-4">
         <ul className="flex justify-around">
           <li><a href="#men">Men</a></li>
           <li><a href="#women">Women</a></li>
