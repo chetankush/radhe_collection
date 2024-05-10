@@ -2,32 +2,42 @@
 
 import React, { useState } from 'react';
 
+
 type Product = {
-  name: string;
-  imageUrl: string;
-};
-
-type CategorySectionProps = {
-  title: string;
-  products: Product[];
-};
-
-const CategorySection: React.FC<CategorySectionProps> = ({ title, products }) => {
-  return (
-    <div className="my-8">
-      <h2 className="text-2xl font-bold mb-4">{title}</h2>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {products.map((product, index) => (
-          <div key={index} className="border p-4 flex flex-col items-center">
-            <img src={product.imageUrl} alt={product.name} className="h-40 w-full object-cover mb-2" />
-            <span>{product.name}</span>
-          </div>
-        ))}
+    name: string;
+    imageUrl: string;
+  };
+  
+  type CategorySectionProps = {
+    title: string;
+    products: Product[];
+  };
+  
+  const CategorySection: React.FC<CategorySectionProps> = ({ title, products }) => {
+    const [cart, setCart] = useState<Product[]>([]);
+  
+    const addToCart = (product: Product) => {
+      setCart(prevCart => [...prevCart, product]);
+    };
+  
+    return (
+      <div className="my-8">
+        <h2 className="text-2xl font-bold mb-4">{title}</h2>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {products.map((product, index) => (
+            <div key={index} className="border p-4 flex flex-col items-center">
+              <img src={product.imageUrl} alt={product.name} className="h-40 w-full object-cover mb-2" />
+              <span>{product.name}</span>
+              <button onClick={() => addToCart(product)} className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                Add to Cart
+              </button>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
-  );
-};
-
+    );
+  };
+  
 const HomePage = () => {
   const [carouselIndex, setCarouselIndex] = useState(0);
   const carouselImages = [
@@ -61,15 +71,17 @@ const HomePage = () => {
           <li><a href="#kids">Kids</a></li>
         </ul>
       </nav>
-      <div className="relative">
-        <img src={carouselImages[carouselIndex]} alt="Carousel" className="w-full" />
+      <div className="relative min-w-full ">
+        <img src={carouselImages[carouselIndex]} alt="Carousel" className="w-full object-cover h-80" />
         <button onClick={() => handleCarousel('prev')} className="absolute left-0 top-1/2 bg-black text-white p-2">Prev</button>
         <button onClick={() => handleCarousel('next')} className="absolute right-0 top-1/2 bg-black text-white p-2">Next</button>
       </div>
       <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4">
         {Object.entries(categories).map(([key, value]) => (
           <CategorySection key={key} title={`${key}'s Clothing`} products={value} />
         ))}
+      </div>
       </div>
     </div>
   );
